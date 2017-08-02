@@ -1,0 +1,68 @@
+--p_0021_CREATE_TABLE_T003_ARCHIVE_Billable_Services_IDR_v4.sql
+/*
+	************************************************************************************
+	NOTE: 
+	Uses: 
+	Created:	03/14/2017
+	Modified:	4/12/2017 - change table name, change [Age_as_of_End_Of_Month] to [Age_as_of_Check-In]
+							added: [Data_for_Month_MM], [Data_for_Year_YYYY]
+	By: glenn garson
+	************************************************************************************
+*/
+USE [Success]
+GO
+
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF OBJECT_ID('dbo.T003_ARCHIVE_Billable_Services_IDR') IS NOT NULL
+    DROP TABLE dbo.T003_ARCHIVE_Billable_Services_IDR
+
+go
+
+CREATE TABLE [dbo].[T003_ARCHIVE_Billable_Services_IDR]
+(
+		[ARCHIVE_T003_PK] [int] IDENTITY(1,1) NOT NULL,
+
+		[CHECKMONTH] [nvarchar](25) NULL,
+		[Data_for_Month_MM] [nvarchar](2),
+		[Data_for_Year_YYYY] [nvarchar](4),		
+		[Office_Location] [nvarchar](50) NULL,
+		[Office_Name] [nvarchar](100) NULL,
+		[Bill_Provider_Name] [nvarchar](100) NULL,
+		[Bill_Provider_Specialty] [nvarchar](100) NULL,
+		[Provider_Type] [nvarchar](255) NULL,
+		[Patient_Name] [nvarchar](100) NULL,
+		[Patient_No] [int] NULL,
+		[Patient_Birth_Date] [date] NULL,
+		[Check-In_Day] [date] NULL,
+		[Check-Out_Day] [date] NULL,
+		[CPT_Code] [nvarchar](15) NULL,
+		[Service] [nvarchar](255) NULL,
+		[CPT_Description] [nvarchar](255) NULL,
+		[Unit_Qty] [int] NULL,
+		[LOC] [nvarchar](2) NULL, 
+
+		[Age_as_of_Check-In] [int],
+		[Adult] [bit] NULL CONSTRAINT T003_ARCHIVE_Billable_Services_IDR$Default$Zero  DEFAULT ((0)),
+		[DateTime_Archived] [datetime] NOT NULL CONSTRAINT T003_Default_GETDATE DEFAULT GETDATE(),
+
+		[ARCHIVE_T003_RowVersion] [timestamp] NULL
+	,CONSTRAINT [T003_ARCHIVE_Billable_Services_IDR$ARCHIVE_T003_PK] PRIMARY KEY NONCLUSTERED 
+		(
+			[ARCHIVE_T003_PK] ASC
+		)
+		WITH 
+				(
+					PAD_INDEX  = OFF, 
+					STATISTICS_NORECOMPUTE  = OFF, 
+					IGNORE_DUP_KEY = OFF, 
+					ALLOW_ROW_LOCKS  = ON, 
+					ALLOW_PAGE_LOCKS  = ON
+				) ON [PRIMARY]
+
+)
